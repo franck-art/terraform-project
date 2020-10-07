@@ -1,4 +1,4 @@
-# project to learn concepts of terraform
+# project to learn concepts of terraform and cloud provider
 * Module 
 * Volume
 * Database (GCP)
