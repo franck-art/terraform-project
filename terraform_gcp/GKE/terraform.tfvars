@@ -1,0 +1,12 @@
+credentials        = "./terraform-gke-keyfile.json"
+project_id         = "phonic-command-291302"
+region             = "europe-west2"
+zones              = ["europe-west2-a", "europe-west2-b", "europe-west2-c"]
+name               = "gke-cluster"
+machine_type       = ""
+min_count          = 1
+max_count          = 3
+disk_size_gb       = 10
+//service_account    = "<service_account_name>@phonic-command-291302.iam.gserviceaccount.com"
+service_account = "310564893631-compute@developer.gserviceaccount.com"
+initial_node_count = 3
