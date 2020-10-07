@@ -1,6 +1,6 @@
 provider "google" {
   credentials = file("YOUR_PATH_TO_JSON_FILE/xxx.json")
-  project     = "phonic-command-291302"
+  project     = "YOUR PROJECT ID"
   region      = "us-central1"
 }
 
