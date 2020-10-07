@@ -1,13 +1,13 @@
 provider "google" {
-  credentials = file("/home/franck/Bureau/TP/test-backend/account.json")
-  project     = "phonic-command-291302"
+  credentials = file("YOUR_PATH_TO_JSON_FILE/xxx.json")
+  project     = "YOUR PROJECT ID"
   region      = "us-central1"
 }
 
 
 terraform {
   backend "gcs" {
-    credentials = "/home/franck/Bureau/TP/test-backend/account.json"
+    credentials = "YOUR_PATH_TO_JSON_FILE/xxx.json"
     bucket  = "franck-sceau"
     prefix  = "terraform/terraform_state"
   }
