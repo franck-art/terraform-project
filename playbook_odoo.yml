@@ -1,0 +1,76 @@
+---
+- name: Installing Odoo13 on centos7 using Docker container by using Ansible
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  tasks:
+  - name: installing packages required by Docker
+    yum:
+      name: ['epel-release', 'yum-utils', 'device-mapper-persistent-data', 'lvm2'] 
+      state: latest
+  - name: Creating docker repository
+    get_url: 
+       url: https://download.docker.com/linux/centos/docker-ce.repo
+       dest: /etc/yum.repos.d/docker-ce.repo
+       mode: 0644
+  - name: Installing Docker last version
+    yum:
+      name: docker-ce
+      state: latest 
+  - name: Starting Docker service
+    service:
+       name: docker 
+       state: started
+       enabled: yes
+  - name: Installing python-pip
+    yum:
+      name: python-pip
+      state: latest 
+  - name: Installing python-docker module nedded for ansible
+    pip:
+      name: docker
+  - name: updating repositiries
+    yum:
+      name: python3
+      state: latest
+
+  - name: Create a volume postgre
+    docker_volume:
+      name: odoo-db-data
+
+  - name: Create a volume odoo
+    docker_volume:
+      name: odoo-web-data
+
+  - name: Create a global network of our two containers
+    docker_network:
+      name: network_odoo
+
+  - name: Starting postgresql serevr
+    docker_container:
+      name: db
+      image: postgres:12.4
+      state: started
+      env:
+        POSTGRES_DB: "postgres"
+        POSTDRES_USER: "odoo"
+        POSTGRES_PASSWORD: "odoo"
+        PGDATA: "/var/lib/postgresql/data/pgdata"
+      volumes:
+        - odoo-db-data:/var/lib/postgresql/data/pgdata
+      networks:
+        - name: network_odoo
+  
+  - name: Starting Odoo container
+    docker_container:
+      name: odoo
+      image: odoo:12.0
+      state: started      
+      ports:
+        - "80:8069"
+      volumes:
+        - odoo-web-data:/var/lib/odoo
+        -  ./config:/etc/odoo
+        -  ./addons:/mnt/extra-addons
+      networks:
+        - name: network_odoo
