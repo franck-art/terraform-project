@@ -1,0 +1,14 @@
+#-----------#
+# Terraform #
+#-----------#
+
+.terraform
+*.tfstate
+*.tfstate.backup
+account.json
+
+#-----#
+# OS  #
+#-----#
+
+.*.swp
